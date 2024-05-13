@@ -4,12 +4,21 @@ config();
 import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 import DeckModel from "./models/Deck";
+import cors from "cors";
 
 
 const PORT = 5123;
 const app = express();
 
+app.use(cors({origin: '*'}));
 app.use(express.json());
+
+app.get('/decks', async (req: Request, res: Response) => {
+
+    const desks = await DeckModel.find();
+    res.json(desks);
+})
+
 app.post('/decks', async (req: Request, res: Response) => {
     const newDeck = new DeckModel({
         title: req.body.title
